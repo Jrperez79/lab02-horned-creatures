@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import images from './data.js';
+import Header from './Header.js';
+import ImageList from './ImageList.js';
+import CreatureFilter from './CreatureFilter.js';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
 
-export default App;
+
+export default class App extends Component {
+  state = {
+      filter: images,
+  }
+
+  handleFilterChange = (e) => {
+    const filterItems = e.target.value
+    this.setState({filter: images.filter(image => image.keyword === filterItems)})
+  }
+
+    render() {
+    return (
+      <div>
+        <Header />
+        <div id="filter">
+          <p>Select A Creature </p>
+          <select onChange={ this.handleFilterChange }> 
+          <CreatureFilter images={images} /> 
+          </select>
+        </div>
+        <ImageList images={ this.state.filter }/>
+      </div>
+    )
+  }
+}
